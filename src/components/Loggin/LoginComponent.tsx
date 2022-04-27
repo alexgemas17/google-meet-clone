@@ -1,10 +1,14 @@
 import React from 'react'
+import { useSelector, useDispatch } from "react-redux"
 import { StartLoginWithGithub } from '../../store/Actions/Auth'
+import { isLoading } from '../../store/appSlices'
 
 import './styles.css'
 
 
 export const LoginComponent = () => {
+    
+    const loading = useSelector(isLoading)
 
     const handleInputLoginWithGithub = () => {
 
@@ -16,6 +20,7 @@ export const LoginComponent = () => {
 
     return (
         <div className='social-networks'>
+            <p> <b>Is loading? {loading}</b></p>
             <p> <b>Login with:</b></p>
 
             <div

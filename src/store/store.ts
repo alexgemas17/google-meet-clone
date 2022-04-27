@@ -4,12 +4,12 @@ import { ThunkAction } from "redux-thunk"
 import { UserData } from '../Dtos/ContextData';
 import { appSlice } from './appSlices'
 
-export const store = configureStore({
-    reducer: {
-        appData: appSlice
-    },
-    devTools: process.env.NODE_ENV !== "development" ? false : true,
-})
+const reducer = {
+    appSlice,
+    // another reducers (if we have)
+};
+
+export const store = configureStore({reducer})
 
 export type AppThunk = ThunkAction<void, UserData, unknown, Action<string>>;
 export type RootState = ReturnType<typeof store.getState>
