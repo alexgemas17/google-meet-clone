@@ -1,0 +1,31 @@
+.login-view-container {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.login-view-left {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    background-color: red;
+}
+
+.login-view-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    background-color:  #daedfe;
+
+    h3 {
+        justify-items: center;
+    }
+}

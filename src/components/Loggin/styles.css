@@ -1,0 +1,60 @@
+.social-networks{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.social-networks p {
+    margin-bottom: 1rem;
+}
+
+.icon-wrapper img{
+    width: 40px;
+    height: 40px;
+}
+
+.btn-login {
+    display: flex;
+    align-items: center;
+
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px 1px rgba(136, 136, 136, 0.2);
+    padding: 0.8rem 1rem 0.8rem 0;
+    border: 1px solid  rgb(161, 161, 161);
+    display: flex;
+    flex-direction: row;
+    width: 25%;
+    margin: 0.2rem 0;
+}
+
+.icon-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: auto;
+}
+
+.btn-text {
+    flex: 2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.github {
+    background-color: white;
+    color: black;
+}
+
+.linkedin {
+    background-color: white;
+    color: black;
+}
+
+.flip {
+    transform: scaleX(-1);
+}
