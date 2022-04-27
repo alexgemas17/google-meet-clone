@@ -1,19 +1,18 @@
+import { Action, configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { configureStore } from '@reduxjs/toolkit'
-import thunk from 'redux-thunk';
-import { userSlice } from "./Slices/UserSlice";
+import { ThunkAction } from "redux-thunk"
+import { UserData } from '../Dtos/ContextData';
+import { appSlice } from './appSlices'
 
-// const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) as typeof compose || compose;
-
-const store = configureStore({
+export const store = configureStore({
     reducer: {
-        user: userSlice,
+        appData: appSlice
     },
+    devTools: process.env.NODE_ENV !== "development" ? false : true,
 })
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
+export type AppThunk = ThunkAction<void, UserData, unknown, Action<string>>;
 export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
