@@ -44,9 +44,10 @@ export const userStore = create<UserState>((set) => ({
     },
     doLogout: () => {
         UserLogout()
-        const user = {} as UserData
         set((state) => ({
-            userData: user
+            ...state,
+            isLogged: true,
+            userData: {} as UserData
         }))
     },
     setIsLogged: (isLogged: boolean) => {
