@@ -1,20 +1,58 @@
-import { Action, configureStore } from '@reduxjs/toolkit'
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { ThunkAction } from "redux-thunk"
+
+import { User, UserCredential } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import create from "zustand";
+import { UserLogout } from "../api/firebaseAuth";
 import { UserData } from '../Dtos/ContextData';
-import { appSlice } from './appSlices'
 
-const reducer = {
-    appSlice,
-    // another reducers (if we have)
-};
+const initialState = {
+    UID: '',
+    displayName: '',
+    userName: '',
+    photoURL: '',
+    email: '',
+} as UserData
 
-export const store = configureStore({reducer})
+interface UserState {
+    userData: UserData;
+    isLogged: boolean;
+    doLogin: (userDto: User) => void;
+    doLogout: () => void;
+    setIsLogged: (isLogged: boolean) => void;
+}
 
-export type AppThunk = ThunkAction<void, UserData, unknown, Action<string>>;
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export const userStore = create<UserState>((set) => ({
+    // initial state
+    userData: initialState,
+    isLogged: false,
+    // methods for manipulating state
+    doLogin: (user: User) => {
+        console.log({user})
 
-// Use throughout your app instead of plain `useDispatch` and `useSelector`
-export const useAppDispatch = () => useDispatch<AppDispatch>()
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+        const userData = {
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            UID: user.uid
+        } as UserData
+
+        set((state) => ({
+            ...state,
+            isLogged: true,
+            userData: userData
+        }))
+    },
+    doLogout: () => {
+        UserLogout()
+        const user = {} as UserData
+        set((state) => ({
+            userData: user
+        }))
+    },
+    setIsLogged: (isLogged: boolean) => {
+        set((state) => ({
+            ...state,
+            isLogged
+        }))
+    },
+}));
