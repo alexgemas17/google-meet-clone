@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { userStore } from "../../store/store";
+import { LobbyRoom } from "../Room/LobbyRoom";
 
 export const HomeView = () => {
 
@@ -16,6 +17,8 @@ export const HomeView = () => {
       <img src={photoURL} alt='user photo!' />
 
       <button onClick={() => doLogout()} >Logout</button>
+
+      <LobbyRoom />
 
     </div>
   )
