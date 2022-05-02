@@ -1,11 +1,8 @@
-import React, { useState } from "react";
-import LoginBackImg from "../../Resources/login-background.jpg";
+import React from "react";
+import LoginBackImg from "../../../public/images/login-background.jpg";
 import { LoginComponent } from "../../components/Loggin/LoginComponent";
 
 import "./LoginView.scss";
-import { userStore } from "../../store/store";
-import { StartLoginWithGithub } from "../../api/firebaseAuth";
-import { useNavigate } from "react-router-dom";
 
 export const LoginView: React.FC = () => {
   return (

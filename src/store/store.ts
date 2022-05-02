@@ -46,7 +46,7 @@ export const userStore = create<UserState>((set) => ({
         UserLogout()
         set((state) => ({
             ...state,
-            isLogged: true,
+            isLogged: false,
             userData: {} as UserData
         }))
     },
