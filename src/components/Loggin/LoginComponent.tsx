@@ -1,4 +1,5 @@
 import React from "react";
+import { loginUser } from "../../api/endpoints";
 import { StartLoginWithGithub } from "../../api/firebaseAuth";
 import { userStore } from "../../store/store";
 
@@ -10,9 +11,9 @@ export const LoginComponent = () => {
 
   const handleInputLoginWithGithub = async () => {
     const result = await StartLoginWithGithub();
-    console.log({ result });
-    if (result) {
+    if (result) { 
       doLogin(result.user);
+      loginUser(result.user)
       setErrorDoingLogin(false);
     } else {
       setErrorDoingLogin(true);

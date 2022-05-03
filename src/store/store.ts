@@ -2,6 +2,7 @@
 import { User, UserCredential } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import create from "zustand";
+import { loginUser } from "../api/endpoints";
 import { UserLogout } from "../api/firebaseAuth";
 import { UserData } from '../Dtos/ContextData';
 

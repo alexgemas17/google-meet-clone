@@ -1,9 +1,9 @@
-import { isEmpty } from "@firebase/util";
 import React from "react";
+import { isEmpty } from "@firebase/util";
 import { IsUserLogged } from "./api/firebaseAuth";
-import "./App.css";
 import { AppRouter } from "./routers/AppRouter";
 import { userStore } from "./store/store";
+import "./App.css";
 
 const App: React.FC = () => {
   const { setIsLogged, doLogin } = userStore();
