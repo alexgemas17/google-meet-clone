@@ -1,22 +1,35 @@
+import { Box, Typography, Grid, Container, Stack, Button } from '@mui/material'
 import React from 'react'
-import { createLocalVideoTrack, LocalVideoTrack } from 'twilio-video'
+import { createLocalVideoTrack, LocalVideoTrack, VideoTrack } from 'twilio-video'
 
 import './LobbyRoom.scss'
 
-export const LobbyRoom = () => {
-    const [videoIsReady, setvideoIsReady] = React.useState(false)
-    const [hasVideoEffect, sethasVideoEffect] = React.useState(false)
-    const [gaussianBlur, setgaussianBlur] = React.useState(false)
+enum VideoEffect {
+    Basic, GrayScale
+}
 
-    const videoProcessor = {
-        processFrame: (inputFrame: any, outputFrame: any) => {
-            const ctx = outputFrame.getContext('2d');
-            if (hasVideoEffect) {
-                ctx.filter = 'grayscale(100%)';
-            }
-            ctx.drawImage(inputFrame, 0, 0);
-        }
-    };
+const basicVideoProcessor = {
+    processFrame: (inputFrame: any, outputFrame: any) => {
+        const ctx = outputFrame.getContext('2d');
+        ctx.drawImage(inputFrame, 0, 0);
+    }
+};
+
+const grayVideoProcessor = {
+    processFrame: (inputFrame: any, outputFrame: any) => {
+        const ctx = outputFrame.getContext('2d');
+        ctx.filter = 'grayscale(100%)';
+        ctx.drawImage(inputFrame, 0, 0);
+    }
+};
+
+export const LobbyRoom = () => {
+    const [videoTrack, setVideoTrack] = React.useState<(LocalVideoTrack | null)>();
+
+    const [videoIsReady, setvideoIsReady] = React.useState(false)
+    const [videoEffect, setVideoEffect] = React.useState<VideoEffect>(VideoEffect.Basic)
+
+    const videoRef = React.useRef<HTMLVideoElement>();
 
     const createLocalVideo = async () => {
         const videoTrack: LocalVideoTrack = await createLocalVideoTrack({
@@ -24,32 +37,63 @@ export const LobbyRoom = () => {
             height: 480,
             frameRate: 30
         })
-
-        const localMediaContainer = document.getElementById('local-media');
-        localMediaContainer?.appendChild(videoTrack.attach());
-        
-        videoTrack.addProcessor(videoProcessor);
+        setVideoTrack(videoTrack)
     }
-
     React.useEffect(() => {
         createLocalVideo()
-        setvideoIsReady(true)
+    }, [])
 
-        return () => {
-            setvideoIsReady(false)
-            const localMediaContainer = document.getElementById('local-media');
-            localMediaContainer?.replaceChildren();
+    React.useEffect(() => {
+        if (videoRef.current && videoTrack) {
+            setvideoIsReady(true)
+            console.log(videoRef.current);
+            videoTrack.attach(videoRef.current);
+            videoTrack.addProcessor(basicVideoProcessor)
         }
 
-    }, [videoProcessor])
+        return () => {
+            videoTrack?.detach()
+        }
+    }, [videoTrack])
 
+    const handleChangeGrayScaleEffect = () => {
+        if (videoRef.current && videoTrack) {
+            if (videoEffect === VideoEffect.GrayScale) {
+                videoTrack.removeProcessor(grayVideoProcessor)
+                videoTrack.addProcessor(basicVideoProcessor)
+                setVideoEffect(VideoEffect.Basic)
+            } else {
+                videoTrack.removeProcessor(basicVideoProcessor)
+                videoTrack.addProcessor(grayVideoProcessor)
+                setVideoEffect(VideoEffect.GrayScale)
+            }
+        }
+    }
 
     return (
-        <div>
-            <span>LobbyRoom</span>
-            <button onClick={() => { sethasVideoEffect(!hasVideoEffect) }}>Blanco y negro</button>
-            <button onClick={() => { setgaussianBlur(!hasVideoEffect) }}>Fondo borroso</button>
-            {videoIsReady && <div id="local-media" className='video-preview'></div>}
-        </div>
+        <Grid marginTop={12} item xs={12}>
+            {!videoIsReady && (
+                <Box className='non-video'>
+                    <Typography variant="h6" gutterBottom align="center" sx={{ flex: 1 }}>
+                        Loading...
+                    </Typography>
+                </Box>)
+            }
+            <Box sx={{ display: { xs: videoIsReady ? 'initial' : 'none', md: 'block' } }} >
+                <Box>
+                    <div id="local-media" className='video-preview'>
+                        <video ref={videoRef} autoPlay={true} />
+                        {/* <audio ref={audioRef} autoPlay={true} muted={true} /> */}
+                    </div>
+                    <Button variant="outlined" onClick={() => { handleChangeGrayScaleEffect() }}>Blanco y negro</Button>
+                    <Button variant="outlined" > Fondo borroso </Button>
+                </Box>
+            </Box >
+
+            <Stack direction="column" spacing={2}>
+                <Button variant="outlined">Crear room</Button>
+                <Button variant="outlined">Ir a room</Button>
+            </Stack>
+        </Grid>
     )
 }

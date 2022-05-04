@@ -1,25 +1,38 @@
-import React, { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import React from "react";
+import { Container, createTheme, CssBaseline, Divider, Grid, ThemeProvider, Typography } from "@mui/material";
+import { Footer } from "../../components/Footer/Footer";
 import { userStore } from "../../store/store";
 import { LobbyRoom } from "../Room/LobbyRoom";
+import { Header } from "../../components/Header/Header";
 
-export const HomeView = () => {
+const theme = createTheme();
 
-  const { userData, doLogout } = userStore();
-  const { displayName, photoURL } = userData
-
-  console.log({userData})
-
+export const HomeView: React.FC = () => {
+  
   return (
-    <div>
-      <h1>Logged view! Hello {displayName}</h1>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <Header />
 
-      <img src={photoURL} alt='user photo!' />
+        <main>
+          <Grid container spacing={4}>
+            <Typography variant="h6" gutterBottom>
+              Welcome!
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={8}
+          >
+            <LobbyRoom />
+          </Grid>
+        </main>
+      </Container>
 
-      <button onClick={() => doLogout()} >Logout</button>
+      <Footer />
 
-      <LobbyRoom />
-
-    </div>
+    </ThemeProvider>
   )
 }
