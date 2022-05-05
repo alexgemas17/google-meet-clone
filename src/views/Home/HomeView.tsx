@@ -1,14 +1,24 @@
 import React from "react";
-import { Container, createTheme, CssBaseline, Divider, Grid, ThemeProvider, Typography } from "@mui/material";
+import { Container, createTheme, CssBaseline, Button, Stack, Grid, ThemeProvider, Typography } from "@mui/material";
 import { Footer } from "../../components/Footer/Footer";
-import { userStore } from "../../store/store";
-import { LobbyRoom } from "../Room/LobbyRoom";
+import { useNavigate } from "react-router-dom";
 import { Header } from "../../components/Header/Header";
+import { CreateNewRoomModal } from '../../components/CreateNewRoomModal/CreateNewRoomModal';
+import { roomStore } from "../../store/roomStore";
+import { LobbyRoom } from "../LobbyRoom/LobbyRoom";
 
 const theme = createTheme();
 
 export const HomeView: React.FC = () => {
-  
+  const navigate = useNavigate();
+  const { room, roomUrl } = roomStore();
+
+  React.useEffect(() => {
+    if (room) {
+      navigate("/room/" + roomUrl)
+    }
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -18,15 +28,22 @@ export const HomeView: React.FC = () => {
         <main>
           <Grid container spacing={4}>
             <Typography variant="h6" gutterBottom>
-              Welcome!
             </Typography>
           </Grid>
           <Grid
-            item
-            xs={12}
-            md={8}
+            container
+            spacing={0}
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
           >
             <LobbyRoom />
+
+            <Stack direction="column" marginRight={15} spacing={2}>
+              {/* <Button variant="outlined">Crear room</Button> */}
+              <CreateNewRoomModal />
+              <Button variant="outlined">Ir a room</Button>
+            </Stack>
           </Grid>
         </main>
       </Container>

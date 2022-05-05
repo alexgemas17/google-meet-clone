@@ -5,7 +5,7 @@ interface ParticipantProps {
     participant: VideoParticipant;
 }
 
-export const VideoChat = ({ participant }: ParticipantProps) => {
+export const VideoRender = ({ participant }: ParticipantProps) => {
 
     const [videoTracks, setVideoTracks] = useState<(VideoTrack | null)[]>([]);
     const [audioTracks, setAudioTracks] = useState<(AudioTrack | null)[]>([]);

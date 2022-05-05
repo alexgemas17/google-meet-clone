@@ -10,16 +10,13 @@ const generateToken = config => {
   );
 };
 
-const videoToken = (identity, room, config) => {
-  let videoGrant;
-  if (typeof room !== 'undefined') {
-    videoGrant = new VideoGrant({ room });
-  } else {
-    videoGrant = new VideoGrant();
-  }
+const videoToken = (userIdentity, roomSID, config) => {
+  const videoGrant = new VideoGrant({ roomSID });
+
   const token = generateToken(config);
   token.addGrant(videoGrant);
-  token.identity = identity;
+  token.identity = userIdentity;
+
   return token;
 };
 

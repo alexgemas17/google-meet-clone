@@ -28,8 +28,6 @@ export const userStore = create<UserState>((set) => ({
     isLogged: false,
     // methods for manipulating state
     doLogin: (user: User) => {
-        console.log({user})
-
         const userData = {
             displayName: user.displayName,
             email: user.email,
@@ -56,5 +54,5 @@ export const userStore = create<UserState>((set) => ({
             ...state,
             isLogged
         }))
-    },
+    }
 }));

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { userStore } from "../store/store";
+import { userStore } from "../store/userStore";
 
 interface PrivateRouteProps {
   children: React.ReactElement;

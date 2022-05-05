@@ -1,7 +1,7 @@
 import React from "react";
 import { loginUser } from "../../api/endpoints";
 import { StartLoginWithGithub } from "../../api/firebaseAuth";
-import { userStore } from "../../store/store";
+import { userStore } from "../../store/userStore";
 
 import "./styles.css";
 

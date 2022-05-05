@@ -1,27 +1,10 @@
-import { Box, Typography, Grid, Container, Stack, Button } from '@mui/material'
 import React from 'react'
-import { createLocalVideoTrack, LocalVideoTrack, VideoTrack } from 'twilio-video'
+import ContrastIcon from '@mui/icons-material/Contrast';
+import { Box, Typography, Grid, Button, IconButton } from '@mui/material'
+import { createLocalVideoTrack, LocalVideoTrack } from 'twilio-video'
+import { basicVideoProcessor, grayVideoProcessor, VideoEffect } from '../../Dtos/VideoEffects';
 
 import './LobbyRoom.scss'
-
-enum VideoEffect {
-    Basic, GrayScale
-}
-
-const basicVideoProcessor = {
-    processFrame: (inputFrame: any, outputFrame: any) => {
-        const ctx = outputFrame.getContext('2d');
-        ctx.drawImage(inputFrame, 0, 0);
-    }
-};
-
-const grayVideoProcessor = {
-    processFrame: (inputFrame: any, outputFrame: any) => {
-        const ctx = outputFrame.getContext('2d');
-        ctx.filter = 'grayscale(100%)';
-        ctx.drawImage(inputFrame, 0, 0);
-    }
-};
 
 export const LobbyRoom = () => {
     const [videoTrack, setVideoTrack] = React.useState<(LocalVideoTrack | null)>();
@@ -46,11 +29,12 @@ export const LobbyRoom = () => {
     React.useEffect(() => {
         if (videoRef.current && videoTrack) {
             setvideoIsReady(true)
-            console.log(videoRef.current);
             videoTrack.attach(videoRef.current);
-            videoTrack.addProcessor(basicVideoProcessor)
-        }
 
+            if (!videoTrack.processor) {
+                videoTrack.addProcessor(basicVideoProcessor)
+            }
+        }
         return () => {
             videoTrack?.detach()
         }
@@ -71,7 +55,7 @@ export const LobbyRoom = () => {
     }
 
     return (
-        <Grid marginTop={12} item xs={12}>
+        <Grid marginTop={12}>
             {!videoIsReady && (
                 <Box className='non-video'>
                     <Typography variant="h6" gutterBottom align="center" sx={{ flex: 1 }}>
@@ -84,16 +68,16 @@ export const LobbyRoom = () => {
                     <div id="local-media" className='video-preview'>
                         <video ref={videoRef} autoPlay={true} />
                         {/* <audio ref={audioRef} autoPlay={true} muted={true} /> */}
+                        <div className='video-options'>
+                            <IconButton aria-label="change gray effect" color="primary" onClick={() => { handleChangeGrayScaleEffect() }}>
+                                <ContrastIcon />
+                            </IconButton>
+                            <Button variant="outlined" > Fondo borroso </Button>
+                        </div>
                     </div>
-                    <Button variant="outlined" onClick={() => { handleChangeGrayScaleEffect() }}>Blanco y negro</Button>
-                    <Button variant="outlined" > Fondo borroso </Button>
+
                 </Box>
             </Box >
-
-            <Stack direction="column" spacing={2}>
-                <Button variant="outlined">Crear room</Button>
-                <Button variant="outlined">Ir a room</Button>
-            </Stack>
         </Grid>
     )
 }

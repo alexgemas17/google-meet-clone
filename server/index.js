@@ -6,6 +6,7 @@ const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
 const { initializeApp } = require("firebase/app");
 const { getFirestore, collection, addDoc, updateDoc, doc } = require("firebase/firestore");
+const { Server } = require('socket.io');
 
 
 const helpers = require('./helpers');
@@ -19,14 +20,6 @@ app.use(bodyParser.json());
 app.use(pino);
 app.use(cors({ credentials: true }))
 
-const sendTokenResponse = (token, res) => {
-  res.set('Content-Type', 'application/json');
-  res.send(
-    JSON.stringify({
-      token: token.toJwt()
-    })
-  );
-};
 
 app.post('/login/user', async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
@@ -57,6 +50,24 @@ app.post('/login/user', async (req, res) => {
   }
 });
 
+app.post('/room/createRoom', async (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  console.log("Name of room: ", req.body.nameRoom)
+
+  const userIdentity = req.body.userName;
+  const roomSID = req.body.roomSID;
+  const token = videoToken(userIdentity, roomSID, config);
+
+  const url = helpers.generateUrl(req.body.nameRoom)
+  console.log("url: ", url)
+
+  res.send(
+    JSON.stringify({
+      token: token.toJwt(),
+      urlRoom: url
+    }));
+});
+
 app.get('/room/:uid', async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   console.log(req.params.uid)
@@ -65,21 +76,22 @@ app.get('/room/:uid', async (req, res) => {
 });
 
 
-app.get('/video/token', (req, res) => {
-  const identity = req.query.identity;
-  const room = req.query.room;
-  const token = videoToken(identity, room, config);
-  sendTokenResponse(token, res);
+app.post('/video/connect', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
 
+  const userIdentity = req.body.identity;
+  const roomSID = req.body.roomSID;
+  const token = videoToken(userIdentity, roomSID, config);
+
+  res.send(
+    JSON.stringify({
+      token: token.toJwt()
+    })
+  );
 });
 
-app.post('/video/token', (req, res) => {
-  const identity = req.body.identity;
-  const room = req.body.room;
-  const token = videoToken(identity, room, config);
-  sendTokenResponse(token, res);
-});
-
-app.listen(port, () =>
-  console.log('Express server is running on ', port )
+const server = app.listen(port, () =>
+  console.log('Express server is running on ', port)
 );
+
+const io = new Server(server);

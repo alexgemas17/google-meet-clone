@@ -3,7 +3,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Avatar, Container } from '@mui/material';
-import { userStore } from '../../store/store';
+import { userStore } from '../../store/userStore';
 
 export const Header = () => {
     const { userData, doLogout } = userStore();

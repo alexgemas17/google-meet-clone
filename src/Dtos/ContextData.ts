@@ -8,3 +8,8 @@ export interface UserData {
 export interface UserContextData {
     userData: UserData
 }
+
+export interface CreateRoomDto {
+    token: string,
+    urlRoom: string
+}

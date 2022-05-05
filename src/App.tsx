@@ -2,7 +2,7 @@ import React from "react";
 import { isEmpty } from "@firebase/util";
 import { IsUserLogged } from "./api/firebaseAuth";
 import { AppRouter } from "./routers/AppRouter";
-import { userStore } from "./store/store";
+import { userStore } from "./store/userStore";
 import "./App.css";
 
 const App: React.FC = () => {
