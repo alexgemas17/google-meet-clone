@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { HomeView } from "../views/Home/HomeView";
 import { LoginView } from "../views/Login/LoginView";
-import { RoomManager } from "../views/Room/RoomManager";
+import { RoomLoader } from "../views/Room/RoomLoader";
 
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
@@ -23,7 +23,7 @@ export const AppRouter = () => {
           path="/room/:id"
           element={
             <PrivateRoute>
-              <RoomManager />
+              <RoomLoader />
             </PrivateRoute>
           }
         />

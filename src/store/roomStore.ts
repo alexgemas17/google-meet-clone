@@ -5,32 +5,41 @@ import { connect, Room as VideoRoom, } from 'twilio-video';
 import { CreateRoomDto } from "../Dtos/ContextData";
 
 interface RoomStore {
+    initRoom: boolean
     room: VideoRoom
     nameRoom: string;
+    roomToken: string;
     roomUrl: string;
-    createNewRoom: (nameRoom: string, userName: string) => void;
+    setInfoRoom: (nameRoom: string, userName: string) => void;
+    setNewRoom: (room: VideoRoom) => void;
     hangup: () => void;
 }
 
 export const roomStore = create<RoomStore>((set) => ({
     // initial state
+    initRoom: false,
     nameRoom: '',
+    roomToken: '',
     roomUrl: '',
     room: {} as VideoRoom,
-    createNewRoom: async (nameRoom: string, userName: string) => {
+    setInfoRoom: async (nameRoom: string, userName: string) => {
         const roomDto: CreateRoomDto = await createRoom(nameRoom, userName)
-        console.log({roomDto})
-        const room = await connect(roomDto.token, {
-            name: nameRoom,
-            audio: true,
-            video: { width: 640, height: 480 }
-        });
+        console.log({ roomDto })
 
         set((state) => ({
             ...state,
-            nameRoom: room.name,
+            nameRoom: nameRoom,
             roomUrl: roomDto.urlRoom,
-            room
+            roomToken: roomDto.token,
+            initRoom: true
+        }))
+    },
+
+    setNewRoom: (room: VideoRoom) => {
+        set((state) => ({
+            ...state,
+            room,
+            initRoom: false
         }))
     },
 

@@ -6,6 +6,15 @@ export default defineConfig({
   plugins: [react()],
   define: {
     'process.env': process.env,
-    global: {}
+    global: {},
+  },
+  server: {
+    proxy: {
+      // Proxying websockets or socket.io
+      '/socket.io': {
+        target: 'ws://localhost:3000',
+        ws: true
+      }
+    }
   }
 })

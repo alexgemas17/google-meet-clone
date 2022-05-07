@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Participant as VideoParticipant, LocalTrackPublication, LocalVideoTrack, } from 'twilio-video';
+import { connect, Room as VideoRoom, Participant as VideoParticipant, LocalTrackPublication, LocalVideoTrack, } from 'twilio-video';
 import { roomStore } from "../../store/roomStore";
+import { userStore } from "../../store/userStore";
 import { VideoRender } from "./VideoRender";
 
 export const RoomManager = () => {
   const navigate = useNavigate();
-  const { room, nameRoom, hangup } = roomStore()
+  const { userData } = userStore()
+  const { initRoom, room, nameRoom, roomToken, setNewRoom, hangup } = roomStore()
 
   const [participants, setParticipants] = useState<VideoParticipant[]>([]);
+
 
   useEffect(() => {
     const participantConnected = (participant: VideoParticipant) => {
@@ -45,6 +48,12 @@ export const RoomManager = () => {
 
     navigate("/")
   }, []);
+
+  if(initRoom && !room) {
+    return <span>Loading...</span>
+  }
+
+  console.log({room})
 
   return (
     <div>

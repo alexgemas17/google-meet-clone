@@ -9,7 +9,7 @@ import { roomStore } from '../../store/roomStore';
 import { userStore } from '../../store/userStore';
 
 export const CreateNewRoomModal = () => {
-    const { createNewRoom } = roomStore();
+    const { setInfoRoom } = roomStore();
     const { userData } = userStore();
 
     const [open, setOpen] = React.useState(false);
@@ -21,7 +21,7 @@ export const CreateNewRoomModal = () => {
 
     const handleClose = () => {
         setOpen(false);
-        createNewRoom(nameRoom, userData.displayName)
+        setInfoRoom(nameRoom, userData.displayName)
     };
 
     return (

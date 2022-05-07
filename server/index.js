@@ -7,19 +7,23 @@ const { videoToken } = require('./tokens');
 const { initializeApp } = require("firebase/app");
 const { getFirestore, collection, addDoc, updateDoc, doc } = require("firebase/firestore");
 const { Server } = require('socket.io');
-
+Object.assign(global, { WebSocket: require('ws') });
 
 const helpers = require('./helpers');
 
 const db = getFirestore(initializeApp(config.firebaseConfig));
-
+const allowedOrigins = ['http://localhost:3000'];
 const app = express();
+app.use(express.json());
 const port = 5000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
-app.use(cors({ credentials: true }))
 
+const options = {
+  origin: allowedOrigins
+};
+app.use(cors(options));
 
 app.post('/login/user', async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
