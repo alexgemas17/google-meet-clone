@@ -1,5 +1,5 @@
 import { getAuth, signInWithPopup, User, UserCredential } from "firebase/auth";
-import { githubProvider } from "../firebase/client";
+import { githubProvider, googleProvider } from "../firebase/client";
 import { userStore } from "../store/userStore";
 
 export const IsUserLogged = (): Promise<User> => {
@@ -21,6 +21,13 @@ export const StartLoginWithGithub = async (): Promise<UserCredential> => {
   const auth = getAuth();
 
   const user = await signInWithPopup(auth, githubProvider);
+  return user;
+};
+
+export const StartLoginWithGoogle = async (): Promise<UserCredential> => {
+  const auth = getAuth();
+
+  const user = await signInWithPopup(auth, googleProvider);
   return user;
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { loginUser } from "../../api/endpoints";
-import { StartLoginWithGithub } from "../../api/firebaseAuth";
+import { StartLoginWithGithub, StartLoginWithGoogle } from "../../api/firebaseAuth";
 import { userStore } from "../../store/userStore";
 
 import "./styles.css";
@@ -20,7 +20,16 @@ export const LoginComponent = () => {
     }
   };
 
-  const handleInputLoginWithGoogle = () => {};
+  const handleInputLoginWithGoogle = async () => {
+    const result = await StartLoginWithGoogle();
+    if (result) { 
+      doLogin(result.user);
+      loginUser(result.user)
+      setErrorDoingLogin(false);
+    } else {
+      setErrorDoingLogin(true);
+    }
+  };
 
   return (
     <div className="social-networks">
