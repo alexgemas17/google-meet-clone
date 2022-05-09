@@ -2,19 +2,15 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  define: {
-    'process.env': process.env,
-    global: {},
-  },
-  server: {
-    proxy: {
-      // Proxying websockets or socket.io
-      '/socket.io': {
-        target: 'ws://localhost:3000',
-        ws: true
-      }
+export default ({ mode }) => {
+  require('dotenv').config({ path: `./.env.${mode}` });
+  console.log(mode)
+  // now you can access config with process.env.{configName}
+
+  return defineConfig({
+    plugins: [react()],
+    define: {
+      'process.env': process.env
     }
-  }
-})
+  })
+}

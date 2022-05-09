@@ -56,19 +56,58 @@ app.post('/login/user', async (req, res) => {
 
 app.post('/room/createRoom', async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  console.log("Name of room: ", req.body.nameRoom)
+  console.log("Name of room: ", req.headers.nameRoom)
 
   const userIdentity = req.body.userName;
   const roomSID = req.body.roomSID;
   const token = videoToken(userIdentity, roomSID, config);
 
-  const url = helpers.generateUrl(req.body.nameRoom)
-  console.log("url: ", url)
+  const url = helpers.generateUrl()
 
   res.send(
     JSON.stringify({
       token: token.toJwt(),
       urlRoom: url
+    }));
+});
+
+app.post('/room/saveRoom', async (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+
+  const room = await helpers.findRoom(db, req.body.url)
+
+  if(room) {
+    res.status(200).send("Ok");
+    return
+  }
+
+  const userIdentity = req.body.userIdentity;
+  const url = req.body.url;
+  const roomName = req.body.roomName;
+  const roomSID = req.body.roomSID;
+
+  const responseOK = await helpers.saveNewRoom(db, userIdentity, url, roomSID, roomName)
+
+  if(responseOK) {
+    res.status(200).send("Ok");
+  } else{
+    res.status(403).send("Error");
+  }
+});
+
+app.post('/room/loadRoom', async (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+
+  const room = await helpers.findRoom(db, req.body.url)
+
+  const userIdentity = req.body.userIdentity;
+  const roomSID = room.roomSID;
+  const token = videoToken(userIdentity, roomSID, config);
+
+  res.send(
+    JSON.stringify({
+      token: token.toJwt(),
+      nameRoom: room.nameRoom
     }));
 });
 
@@ -99,3 +138,6 @@ const server = app.listen(port, () =>
 );
 
 const io = new Server(server);
+
+
+

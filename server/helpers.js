@@ -1,4 +1,5 @@
-const { collection, getDocs } = require("firebase/firestore");
+const { collection, getDocs, doc, setDoc } = require("firebase/firestore");
+
 
 module.exports.findUser = async function (db, user) {
     const querySnapshot = await getDocs(collection(db, "users"));
@@ -23,27 +24,26 @@ module.exports.hasUserDataChanged = function (userFromDTO, userFromDB) {
         && userFromDTO.ImgURL !== userFromDB.ImgURL
 }
 
-module.exports.findRoom = async function (db, roomID) {
+module.exports.findRoom = async function (db, url) {
     const querySnapshot = await getDocs(collection(db, "rooms"));
-    let roomInfo = null
+    let room = null
 
     querySnapshot.docs.forEach((doc) => {
-        console.log(doc.id);
-        console.log({ roomID });
-        if (doc.id === roomID) {
-            const { admin, roomSID } = doc.data()
-            roomInfo = {
-                uid: doc.id,
-                admin,
-                roomSID
+        const { admin, name, roomSID } = doc.data()
+        if (doc.id === url) {
+            room = {
+                userAdmin: admin,
+                nameRoom: name,
+                roomSID: roomSID
             }
         }
     });
 
-    return roomInfo
+    return room
 }
 
-module.exports.generateUrl = function genUniqueId(id) {
+
+module.exports.generateUrl = function () {
     const dateStr = Date
         .now()
         .toString(36); // convert num to base 36 and stringify
@@ -51,9 +51,20 @@ module.exports.generateUrl = function genUniqueId(id) {
     const randomStr = Math
         .random()
         .toString(36)
-        .substring(2, 8); // start at index 2 to skip decimal point
+        .substring(2, 8); // start at index 2 to skip decimal poin
+    return `${dateStr}-${randomStr}`;
+}
 
-    const idStrt = id.toString(36).substring(2, 8);
-
-    return `${dateStr}-${randomStr}-${idStrt}`;
+module.exports.saveNewRoom = async function (db, userName, roomURL, roomSID, roomName) {
+    try {
+        const docRef = await setDoc(doc(db, "rooms", roomURL), {
+            admin: userName,
+            roomSID,
+            name: roomName
+        });
+        return true
+    } catch (e) {
+        console.error("Error adding document: ", e);
+        return false
+    }
 }

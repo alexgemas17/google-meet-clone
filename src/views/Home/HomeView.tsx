@@ -11,13 +11,13 @@ const theme = createTheme();
 
 export const HomeView: React.FC = () => {
   const navigate = useNavigate();
-  const { initRoom, roomUrl } = roomStore();
+  const { room, roomUrl } = roomStore();
 
   React.useEffect(() => {
-    if (initRoom) {
+    if (room && roomUrl) {
       navigate("/room/" + roomUrl)
     }
-  }, [initRoom, roomUrl])
+  }, [room, roomUrl])
 
   return (
     <ThemeProvider theme={theme}>

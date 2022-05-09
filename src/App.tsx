@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { isEmpty } from "@firebase/util";
 import { IsUserLogged } from "./api/firebaseAuth";
 import { AppRouter } from "./routers/AppRouter";
@@ -7,6 +7,8 @@ import "./App.css";
 
 const App: React.FC = () => {
   const { setIsLogged, doLogin } = userStore();
+  const [isLoading, setIsLoading] = React.useState(true)
+
   React.useEffect(() => {
     const checkIfUserLogged = async () => {
       const user = await IsUserLogged();
@@ -16,10 +18,15 @@ const App: React.FC = () => {
       } else {
         setIsLogged(false);
       }
+      setIsLoading(false)
     };
 
     checkIfUserLogged();
   }, []);
+
+  if(isLoading) {
+    return <>loading...</>
+  }
 
   return (
     <>

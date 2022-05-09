@@ -4,10 +4,13 @@ import { userStore } from "../store/userStore";
 
 interface PublicRouteProps {
   children: React.ReactElement;
+  redirectTo: string;
 }
 
-export const PublicRoute = ({ children }: PublicRouteProps) => {
+export const PublicRoute = ({ children, redirectTo }: PublicRouteProps) => {
   const { isLogged } = userStore();
 
-  return isLogged ? <Navigate to="/home" /> : children;
+  console.log('PublicRoute ', {isLogged});
+
+  return isLogged ? <Navigate to={redirectTo} /> : children;
 };

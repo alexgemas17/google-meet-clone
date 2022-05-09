@@ -1,13 +1,15 @@
 import React, { useContext } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet  } from "react-router-dom";
 import { userStore } from "../store/userStore";
 
 interface PrivateRouteProps {
-  children: React.ReactElement;
+  redirectTo: string;
 }
 
-export const PrivateRoute = ({ children }: PrivateRouteProps) => {
+export const PrivateRoute = ({ redirectTo }: PrivateRouteProps) => {
   const { isLogged } = userStore();
 
-  return isLogged ? children : <Navigate to="/login" />;
+  console.log('private ', {isLogged});
+  
+  return isLogged ? <Outlet/> : <Navigate to={redirectTo} />;
 };

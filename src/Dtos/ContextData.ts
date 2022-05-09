@@ -13,3 +13,8 @@ export interface CreateRoomDto {
     token: string,
     urlRoom: string
 }
+
+export interface LoadRoomDto {
+    token: string,
+    nameRoom: string
+}

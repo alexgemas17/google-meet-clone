@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import create from "zustand";
-import { createRoom } from "../api/endpoints";
+import { createRoom, loadRoom, saveRoom } from "../api/endpoints";
 import { connect, Room as VideoRoom, } from 'twilio-video';
-import { CreateRoomDto } from "../Dtos/ContextData";
+import { CreateRoomDto, LoadRoomDto } from "../Dtos/ContextData";
 
 interface RoomStore {
     initRoom: boolean
@@ -11,11 +11,12 @@ interface RoomStore {
     roomToken: string;
     roomUrl: string;
     setInfoRoom: (nameRoom: string, userName: string) => void;
-    setNewRoom: (room: VideoRoom) => void;
+    setNewRoom: (room: VideoRoom, userIdentity: string) => void;
+    loadRoom: (url: string, userIdentity: string) => void;
     hangup: () => void;
 }
 
-export const roomStore = create<RoomStore>((set) => ({
+export const roomStore = create<RoomStore>((set, get) => ({
     // initial state
     initRoom: false,
     nameRoom: '',
@@ -35,7 +36,9 @@ export const roomStore = create<RoomStore>((set) => ({
         }))
     },
 
-    setNewRoom: (room: VideoRoom) => {
+    setNewRoom: (room: VideoRoom, userIdentity: string) => {
+        saveRoom(get().nameRoom, userIdentity, get().roomUrl, room.sid)
+
         set((state) => ({
             ...state,
             room,
@@ -43,10 +46,24 @@ export const roomStore = create<RoomStore>((set) => ({
         }))
     },
 
+    loadRoom: async (url: string, userIdentity: string) => {
+        const roomDto: LoadRoomDto = await loadRoom(url, userIdentity)
+
+        set((state) => ({
+            ...state,
+            nameRoom: roomDto.nameRoom,
+            roomUrl: url,
+            roomToken: roomDto.token,
+            initRoom: true
+        }))
+    },
+
     hangup: () => {
         set((state) => ({
             ...state,
             nameRoom: '',
+            roomToken: '',
+            roomUrl: '',
             room: {} as VideoRoom,
         }))
     }
