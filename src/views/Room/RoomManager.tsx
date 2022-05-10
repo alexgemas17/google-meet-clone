@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, IconButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { connect, Room as VideoRoom, Participant as VideoParticipant, LocalTrackPublication, LocalVideoTrack, } from 'twilio-video';
@@ -6,6 +6,7 @@ import { useDate } from "../../hooks/useDate";
 import { roomStore } from "../../store/roomStore";
 import { userStore } from "../../store/userStore";
 import { VideoRender } from "./VideoRender";
+import CallEndIcon from '@mui/icons-material/CallEnd';
 
 import './RoomManager.scss'
 
@@ -90,17 +91,15 @@ export const RoomManager = () => {
       </Grid>
 
       <div className="room-info">
-        {/* <Typography color={'white'} variant="h5" component="h4">{time} | {nameRoom}</Typography> */}
-      </div>
-
-      <div className="room-action">
-        <Typography color={'white'} variant="h5" component="h4">{time} | {nameRoom}</Typography>
-        <div>
+        <Typography sx={{ marginLeft:"20px"}} color={'white'} variant="h5" component="h4">{time} | {nameRoom}</Typography>
+        <div className="room-action">
           <button onClick={() => handlehangup()}>quitar video</button>
-          <button onClick={() => handlehangup()}>Log out</button>
+          <IconButton aria-label="hang" className='hang-button' sx={{ backgroundColor:'red', marginLeft:"15px", marginRight:"15px" }} color="default" onClick={() => { handlehangup() }}>
+              <CallEndIcon sx={{ fontSize: "35px" }} />
+          </IconButton>
           <button onClick={() => handlehangup()}>quitar audio</button>
         </div>
-        <Typography color={'white'} variant="h5" component="h4">chat!</Typography>
+        <Typography sx={{ marginRight:"20px"}}  color={'white'} variant="h5" component="h4">chat!</Typography>
       </div>
     </div>
 
