@@ -18,7 +18,7 @@ export const LoginView: React.FC = () => {
       navigate('/');
     }
   }, [isLogged])
-
+  
   return (
     <div className="login-view-container">
       <div

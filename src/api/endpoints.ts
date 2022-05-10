@@ -50,7 +50,7 @@ export const saveRoom = async (roomName: string, userIdentity: string, url: stri
     })
 }
 
-export const loadRoom = async (url: string, userIdentity: string): Promise<LoadRoomDto> => {
+export const loadRoomFromDb = async (url: string, userIdentity: string): Promise<LoadRoomDto> => {
     return fetch("http://localhost:5000/room/loadRoom", {
         method: "POST",
         mode: 'cors',

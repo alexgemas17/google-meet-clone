@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import create from "zustand";
-import { createRoom, loadRoom, saveRoom } from "../api/endpoints";
+import { createRoom, saveRoom } from "../api/endpoints";
 import { connect, Room as VideoRoom, } from 'twilio-video';
 import { CreateRoomDto, LoadRoomDto } from "../Dtos/ContextData";
+import QueryString from "qs";
 
 interface RoomStore {
     initRoom: boolean
@@ -12,12 +13,13 @@ interface RoomStore {
     roomUrl: string;
     setInfoRoom: (nameRoom: string, userName: string) => void;
     setNewRoom: (room: VideoRoom, userIdentity: string) => void;
-    loadRoom: (url: string, userIdentity: string) => void;
+    loadRoom: (roomDto: LoadRoomDto, url: string) => void;
     hangup: () => void;
 }
 
 export const roomStore = create<RoomStore>((set, get) => ({
     // initial state
+    
     initRoom: false,
     nameRoom: '',
     roomToken: '',
@@ -46,9 +48,7 @@ export const roomStore = create<RoomStore>((set, get) => ({
         }))
     },
 
-    loadRoom: async (url: string, userIdentity: string) => {
-        const roomDto: LoadRoomDto = await loadRoom(url, userIdentity)
-
+    loadRoom: (roomDto: LoadRoomDto, url: string) => {
         set((state) => ({
             ...state,
             nameRoom: roomDto.nameRoom,

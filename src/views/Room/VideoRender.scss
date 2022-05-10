@@ -1,0 +1,15 @@
+.video-participant {
+    position: relative;
+
+    height: 100%;
+    width: 100%;
+
+    video {
+        border-radius: 3%;
+        border: 2px solid black;
+    }
+
+    .is-talking {
+        border: 5px solid rgb(125, 125, 177);
+    }
+}

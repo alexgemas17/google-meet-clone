@@ -6,6 +6,7 @@ import { Header } from "../../components/Header/Header";
 import { CreateNewRoomModal } from '../../components/CreateNewRoomModal/CreateNewRoomModal';
 import { roomStore } from "../../store/roomStore";
 import { LobbyRoom } from "../LobbyRoom/LobbyRoom";
+import { NavigateRoomModal } from "../../components/CreateNewRoomModal/NavigateRoomModal";
 
 const theme = createTheme();
 
@@ -40,9 +41,8 @@ export const HomeView: React.FC = () => {
             <LobbyRoom />
 
             <Stack direction="column" marginRight={15} spacing={2}>
-              {/* <Button variant="outlined">Crear room</Button> */}
               <CreateNewRoomModal />
-              <Button variant="outlined">Ir a room</Button>
+              <NavigateRoomModal />
             </Stack>
           </Grid>
         </main>

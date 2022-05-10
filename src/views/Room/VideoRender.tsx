@@ -1,11 +1,15 @@
+import { width } from '@mui/system';
 import React, { useState, useEffect, useRef } from 'react';
 import { AudioTrack, VideoTrack, Participant as VideoParticipant, } from 'twilio-video';
 
+import './VideoRender.scss'
+
 interface ParticipantProps {
     participant: VideoParticipant;
+    numberOfParticipant: number
 }
 
-export const VideoRender = ({ participant }: ParticipantProps) => {
+export const VideoRender = ({ participant, numberOfParticipant }: ParticipantProps) => {
 
     const [videoTracks, setVideoTracks] = useState<(VideoTrack | null)[]>([]);
     const [audioTracks, setAudioTracks] = useState<(AudioTrack | null)[]>([]);
@@ -43,6 +47,8 @@ export const VideoRender = ({ participant }: ParticipantProps) => {
                 setAudioTracks(audioTracks => audioTracks.filter(a => a !== track));
             }
         };
+
+
 
         setVideoTracks(getExistingVideoTracks(participant));
         setAudioTracks(getExistingAudioTracks(participant));
@@ -89,10 +95,9 @@ export const VideoRender = ({ participant }: ParticipantProps) => {
 
 
     return (
-        <div className="participant" id={participant.identity}>
-            <div className="identity">{participant.identity}</div>
-            <video ref={videoRef} autoPlay={true} />
-            <audio ref={audioRef} autoPlay={true} muted={true} />
+        <div className='video-participant' id={participant.identity}>
+            <video style={{ width:"90%" }} ref={videoRef} autoPlay={true} />
+            <audio ref={audioRef} autoPlay={true} />
         </div>
     );
 };

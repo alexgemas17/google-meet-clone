@@ -2,6 +2,7 @@ import React from 'react'
 import ContrastIcon from '@mui/icons-material/Contrast';
 import { Box, Typography, Grid, Button, IconButton } from '@mui/material'
 import { createLocalVideoTrack, LocalVideoTrack } from 'twilio-video'
+import { GaussianBlurBackgroundProcessor } from '@twilio/video-processors';
 import { basicVideoProcessor, grayVideoProcessor, VideoEffect } from '../../Dtos/VideoEffects';
 
 import './LobbyRoom.scss'
@@ -32,6 +33,11 @@ export const LobbyRoom = () => {
             videoTrack.attach(videoRef.current);
 
             if (!videoTrack.processor) {
+                const bg = new GaussianBlurBackgroundProcessor({
+                    assetsPath: '/',
+                    maskBlurRadius: 10,
+                    blurFilterRadius: 5,
+                  });
                 videoTrack.addProcessor(basicVideoProcessor)
             }
         }
@@ -75,7 +81,6 @@ export const LobbyRoom = () => {
                             <Button variant="outlined" > Fondo borroso </Button>
                         </div>
                     </div>
-
                 </Box>
             </Box >
         </Grid>

@@ -1,12 +1,14 @@
 const config = require('./config');
 const express = require('express');
 const cors = require('cors')
+const path = require('path')
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
 const { initializeApp } = require("firebase/app");
 const { getFirestore, collection, addDoc, updateDoc, doc } = require("firebase/firestore");
 const { Server } = require('socket.io');
+const serveStatic = require('serve-static')
 Object.assign(global, { WebSocket: require('ws') });
 
 const helpers = require('./helpers');
@@ -16,6 +18,9 @@ const allowedOrigins = ['http://localhost:3000'];
 const app = express();
 app.use(express.json());
 const port = 5000;
+app.use(serveStatic(path.join(__dirname, 'public')))
+app.use(serveStatic(path.join(__dirname, 'node_modules/twilio-video/dist/')))
+app.use(serveStatic(path.join(__dirname, 'node_modules/@twilio/video-processors/dist/build')))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
@@ -99,6 +104,10 @@ app.post('/room/loadRoom', async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
 
   const room = await helpers.findRoom(db, req.body.url)
+
+  if(room === null || room.roomSID === null) {
+    res.status(403).send("Error");
+  }
 
   const userIdentity = req.body.userIdentity;
   const roomSID = room.roomSID;

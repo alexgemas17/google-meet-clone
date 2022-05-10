@@ -6,11 +6,17 @@ import { roomStore } from '../../store/roomStore';
 import { RoomManager } from './RoomManager';
 import { userStore } from '../../store/userStore';
 
+import './RoomManager.scss'
+import { Typography } from '@mui/material';
+import { LoadRoomDto } from '../../Dtos/ContextData';
+import { loadRoomFromDb } from '../../api/endpoints';
+
 export const RoomLoader = () => {
     let { roomURL } = useParams();
     const navigate = useNavigate();
     const { initRoom, room, nameRoom, roomToken, setNewRoom, loadRoom } = roomStore()
-    const { userData, isLogged } = userStore()
+    const { userData } = userStore()
+    const [errorSearching, setErrorSearching] = React.useState(false)
 
     console.log({initRoom})
     console.log({room})
@@ -18,32 +24,42 @@ export const RoomLoader = () => {
     console.log({roomURL})
 
     React.useEffect(() => {
+      if(errorSearching){
+        navigate('/')
+      }
+    }, [errorSearching])
+    
+    React.useEffect(() => {
         if (initRoom) {
-            console.log('connecting!...', roomToken, nameRoom)
             Video.connect(roomToken, {
                 name: nameRoom
             })
                 .then((room) => {
-                    console.log('connected! ', room)
                     setNewRoom(room, userData.displayName)
                 })
         }
     }, [initRoom]);
 
+    const getRoom = async () => {
+        let roomDto: LoadRoomDto = {} as LoadRoomDto
+        try {
+            roomDto = await loadRoomFromDb(roomURL ?? '', userData.displayName)
+            loadRoom(roomDto, roomURL ?? '')
+        } catch (error) {
+            setErrorSearching(true)
+        }
+    }
+
     React.useEffect(() => {
         if (roomToken === '' && roomURL && Object.keys(room).length === 0) {
-            loadRoom(roomURL, userData.displayName)
+            getRoom()
         }
     }, [roomToken, room]);
-
-    if(!isLogged) {
-        navigate("login/redirect/" + 'roomUrl')
-    }
 
     return (
         <>
             {
-                initRoom || Object.keys(room).length === 0 ? <span>Loading...</span> : <RoomManager/>
+                initRoom || Object.keys(room).length === 0 ? <span className="room-manager-loading"><Typography color={'white'} variant="h5" component="h4">Loading...</Typography></span> : <RoomManager/>
             }
         </>
     )

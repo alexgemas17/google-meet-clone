@@ -25,7 +25,7 @@ const App: React.FC = () => {
   }, []);
 
   if(isLoading) {
-    return <>loading...</>
+    return <span className="app-loading">loading...</span>
   }
 
   return (

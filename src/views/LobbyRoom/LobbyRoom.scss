@@ -24,7 +24,12 @@
 .non-video {
     border-radius: 2%;
     border: 5px solid rgb(125, 125, 177);
+    background-color: #202124;
     position: absolute;
     width: 650px;
     height: 490px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
