@@ -60,6 +60,9 @@ export const LobbyRoom = () => {
         }
     }
 
+    console.log(process.env);
+    
+
     return (
         <Grid marginTop={12}>
             {!videoIsReady && (

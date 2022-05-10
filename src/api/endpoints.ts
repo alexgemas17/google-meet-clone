@@ -3,7 +3,7 @@ import { Room as VideoRoom } from 'twilio-video';
 import { CreateRoomDto, LoadRoomDto, UserData } from "../Dtos/ContextData"
 
 export const loginUser = async (user: User) => {
-    fetch("http://localhost:5000/login/user", {
+    fetch(process.env.REACT_APP_SOCKET_URL + "/login/user", {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify({
@@ -17,7 +17,7 @@ export const loginUser = async (user: User) => {
 }
 
 export const createRoom = async (nameRoom: string, userName: string): Promise<CreateRoomDto> => {
-    return fetch("http://localhost:5000/room/createRoom", {
+    return fetch(process.env.REACT_APP_SOCKET_URL + "/room/createRoom", {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify({
@@ -33,7 +33,7 @@ export const createRoom = async (nameRoom: string, userName: string): Promise<Cr
 }
 
 export const saveRoom = async (roomName: string, userIdentity: string, url: string, roomSID: string)=> {
-    fetch("http://localhost:5000/room/saveRoom", {
+    fetch(process.env.REACT_APP_SOCKET_URL + "/room/saveRoom", {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify({
@@ -51,7 +51,7 @@ export const saveRoom = async (roomName: string, userIdentity: string, url: stri
 }
 
 export const loadRoomFromDb = async (url: string, userIdentity: string): Promise<LoadRoomDto> => {
-    return fetch("http://localhost:5000/room/loadRoom", {
+    return fetch(process.env.REACT_APP_SOCKET_URL + "/room/loadRoom", {
         method: "POST",
         mode: 'cors',
         body: JSON.stringify({

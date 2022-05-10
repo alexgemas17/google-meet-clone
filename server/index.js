@@ -17,7 +17,7 @@ const db = getFirestore(initializeApp(config.firebaseConfig));
 const allowedOrigins = ['http://localhost:3000'];
 const app = express();
 app.use(express.json());
-const port = 5000;
+const port = 3000;
 app.use(serveStatic(path.join(__dirname, 'public')))
 app.use(serveStatic(path.join(__dirname, 'node_modules/twilio-video/dist/')))
 app.use(serveStatic(path.join(__dirname, 'node_modules/@twilio/video-processors/dist/build')))
