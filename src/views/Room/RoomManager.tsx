@@ -23,11 +23,10 @@ export const RoomManager = () => {
   const [controlNumber, setcontrolNumber] = useState(2);
   const { time } = useDate()
 
-  const [participants, setParticipants] = useState<VideoParticipant[]>([]);
+  const [participants, setParticipants] = useState<VideoParticipant[]>([]); 
 
+  // Handle grid layout
   useEffect(() => {
-    console.log(participants.length + 1)
-    console.log({ controlNumber })
     if (participants.length === controlNumber && minNumber >= 1) {
       setminNumber(minNumber - 2)
       setcontrolNumber(controlNumber + 3)
@@ -36,6 +35,7 @@ export const RoomManager = () => {
 
   }, [participants]);
 
+  // Handle events from participant
   useEffect(() => {
     const participantConnected = (participant: VideoParticipant) => {
       setParticipants((prevParticipants) => [...prevParticipants, participant]);

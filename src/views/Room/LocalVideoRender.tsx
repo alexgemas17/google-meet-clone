@@ -1,6 +1,6 @@
 import { width } from '@mui/system';
 import React, { useState, useEffect, useRef } from 'react';
-import { AudioTrack, VideoTrack, Participant as VideoParticipant, LocalParticipant, } from 'twilio-video';
+import { AudioTrack, VideoTrack, Participant as VideoParticipant, LocalParticipant, RemoteParticipant, } from 'twilio-video';
 
 import './VideoRender.scss'
 
@@ -10,7 +10,7 @@ interface ParticipantProps {
     enableMicro: boolean,
 }
 
-export const VideoRender = ({ participant, showCamera, enableMicro }: ParticipantProps) => {
+export const LocalVideoRender = ({ participant, showCamera, enableMicro }: ParticipantProps) => {
 
     const [videoTracks, setVideoTracks] = useState<(VideoTrack | null)[]>([]);
     const [audioTracks, setAudioTracks] = useState<(AudioTrack | null)[]>([]);
@@ -31,6 +31,21 @@ export const VideoRender = ({ participant, showCamera, enableMicro }: Participan
         return existingAudioTracks;
     }
 
+    const handleMuteAndUnmuteEventsForRemoteParticipant = (participant: RemoteParticipant) => {
+        participant.tracks.forEach(publication => {
+            if (!publication.isSubscribed)
+                return;
+    
+            if (!publication.track)
+                return;
+    
+            const track = publication.track;
+    
+            track.on('enabled', () => onTrackEnabled(track, participant));
+            track.on('disabled', () => onTrackDisabled(track, participant));
+        });
+    }
+
     // When a new track is added or removed, update the video and audio tracks in the state
     useEffect(() => {
         const trackSubscribed = (track: AudioTrack | VideoTrack) => {
@@ -48,6 +63,8 @@ export const VideoRender = ({ participant, showCamera, enableMicro }: Participan
                 setAudioTracks(audioTracks => audioTracks.filter(a => a !== track));
             }
         };
+
+        handleMuteAndUnmuteEventsForRemoteParticipant(participant);
 
         setVideoTracks(getExistingVideoTracks(participant));
         setAudioTracks(getExistingAudioTracks(participant));
