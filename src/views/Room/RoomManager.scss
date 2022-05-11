@@ -12,11 +12,21 @@
 }
 
 .room-info {
-    width: 100vw;
+    width: 100%;
+    position: fixed;
+    left: 15px;
+    bottom: 15px;
+
+    display: flex;
+    align-items: center;
+}
+
+.room-action {
+    width: 100%;
     position: fixed;
     bottom: 15px;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }

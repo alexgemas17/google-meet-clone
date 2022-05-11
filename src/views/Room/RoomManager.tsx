@@ -7,6 +7,10 @@ import { roomStore } from "../../store/roomStore";
 import { userStore } from "../../store/userStore";
 import { VideoRender } from "./VideoRender";
 import CallEndIcon from '@mui/icons-material/CallEnd';
+import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
 
 import './RoomManager.scss'
 
@@ -91,37 +95,23 @@ export const RoomManager = () => {
       </Grid>
 
       <div className="room-info">
-        <Typography sx={{ marginLeft:"20px"}} color={'white'} variant="h5" component="h4">{time} | {nameRoom}</Typography>
-        <div className="room-action">
-          <button onClick={() => handlehangup()}>quitar video</button>
-          <IconButton aria-label="hang" className='hang-button' sx={{ backgroundColor:'red', marginLeft:"15px", marginRight:"15px" }} color="default" onClick={() => { handlehangup() }}>
-              <CallEndIcon sx={{ fontSize: "35px" }} />
-          </IconButton>
-          <button onClick={() => handlehangup()}>quitar audio</button>
-        </div>
-        <Typography sx={{ marginRight:"20px"}}  color={'white'} variant="h5" component="h4">chat!</Typography>
+        <Typography sx={{ marginLeft: "20px" }} color={'white'} variant="h5" component="h4">{time} | {nameRoom}</Typography>
+        {/* <Typography sx={{ marginRight:"20px"}}  color={'white'} variant="h5" component="h4">chat!</Typography> */}
+      </div>
+
+      <div className="room-action">
+        <IconButton aria-label="hidde-video" sx={{ color:'white' }} color="default">
+          <VideocamOffIcon sx={{ fontSize: "35px" }} />
+        </IconButton>
+
+        <IconButton aria-label="hang" sx={{ backgroundColor: 'red', marginLeft: "15px", marginRight: "15px" }} color="default" onClick={() => { handlehangup() }}>
+          <CallEndIcon sx={{ fontSize: "35px" }} />
+        </IconButton>
+
+        <IconButton aria-label="hidde-microphone" sx={{ color:'white' }}  color="default">
+          <MicOffIcon sx={{ fontSize: "35px" }} />
+        </IconButton>
       </div>
     </div>
-
-    // <div className="room-manager">
-    //   <div className="container">
-    //     {/* <Grid container justifyContent={"center"} spacing={3} alignItems="stretch">
-
-    //     </Grid> */}
-    //     <VideoRender
-    //       key={room.localParticipant.sid}
-    //       participant={room.localParticipant}
-    //     />
-
-    //     {
-    //       participants.map((participant) => (
-    //         <React.Fragment>
-    //           <VideoRender key={participant.sid} participant={participant} />
-    //         </React.Fragment>
-    //       ))
-    //     }
-    //   </div>
-    //     
-    // </div>
   )
 }
