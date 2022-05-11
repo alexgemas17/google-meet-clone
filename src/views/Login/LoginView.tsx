@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import LoginBackImg from "../../../public/images/login-background.jpg";
@@ -18,7 +19,7 @@ export const LoginView: React.FC = () => {
       navigate('/');
     }
   }, [isLogged])
-  
+
   return (
     <div className="login-view-container">
       <div
@@ -29,10 +30,10 @@ export const LoginView: React.FC = () => {
       ></div>
 
       <div className="login-view-right">
-        <h3>Bienvenido a Alxapp Meet!</h3>
+        <div className="title">
+          <Typography color={'black'} variant="h3" component="h2">Welcome to Alxapp Meet!</Typography>
+        </div>
         <LoginComponent />
-
-        <Footer />
       </div>
     </div>
   );

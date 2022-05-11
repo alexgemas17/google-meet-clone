@@ -16,7 +16,7 @@ require('dotenv').config()
 const helpers = require('./helpers');
 
 const db = getFirestore(initializeApp(config.firebaseConfig));
-const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = ['http://localhost:3000', 'https://google-meet-clone-alexgemas17.netlify.app'];
 const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
