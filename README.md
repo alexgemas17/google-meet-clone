@@ -19,7 +19,7 @@ You cannot do:
 ## Build by 🛠️
 
 * [ReactJS](https://es.reactjs.org/docs/getting-started.html)
-* [Express](https://expressjs.com/
-* [Zustand](https://zustand-demo.pmnd.rs/
+* [Express](https://expressjs.com/)
+* [Zustand](https://zustand-demo.pmnd.rs/)
 * [Fireabse](https://firebase.google.com/docs)
 * [Twilio](https://www.twilio.com/es-mx/)
