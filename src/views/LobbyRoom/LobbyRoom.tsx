@@ -68,7 +68,7 @@ export const LobbyRoom = () => {
             {!videoIsReady && (
                 <Box className='non-video'>
                     <Typography variant="h6" gutterBottom align="center" sx={{ flex: 1 }}>
-                        Loading...
+                        No camera
                     </Typography>
                 </Box>)
             }
@@ -81,7 +81,7 @@ export const LobbyRoom = () => {
                             <IconButton aria-label="change gray effect" color="primary" onClick={() => { handleChangeGrayScaleEffect() }}>
                                 <ContrastIcon />
                             </IconButton>
-                            <Button variant="outlined" > Fondo borroso </Button>
+                            {/* <Button variant="outlined" > Fondo borroso </Button> */}
                         </div>
                     </div>
                 </Box>
