@@ -1,6 +1,6 @@
 # Google Meet Clone!
 Google meet clone for the Midudev's hackaton made in 2 weeks
-This project is only for learning porpose. You cannot use it in real projects.
+This project is only for learning porpose, you cannot use it in real projects.
 
 Link: https://google-meet-clone-alexgemas17.netlify.app/.
 
