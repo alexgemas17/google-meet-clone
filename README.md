@@ -4,7 +4,7 @@ This project is only for learning porpose. You cannot use it in real projects.
 
 Link: https://google-meet-clone-alexgemas17.netlify.app/.
 
-## State: Stand by 
+# State: Stand by 
 
 ## Features
 * Do login with Github or Google
